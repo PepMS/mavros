@@ -30,14 +30,12 @@ private:
     void policy_cb(const uav_oc_msgs::UAVOptCtlPolicyConstPtr &msg)
     {
         mavlink::common::msg::OPTCTL_POLICY policy_data;
-
+     
+        std::copy_n(msg->u_desired.begin(), 4, policy_data.udes.begin());
         std::array<float, 4> ffterm = {msg->ffterm.mx, msg->ffterm.my, msg->ffterm.mz,msg->ffterm.th};
-        policy_data.ffterm = ffterm;
-
+        policy_data.ffterm = ffterm;       
+        
         UAS_FCU(m_uas)->send_message(policy_data);
-
-
-
     }
 };
 } // namespace extra_plugins
